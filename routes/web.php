@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('landing');
+    return view('landing')->with('rand', function() {
+        $rand = rand(0,360);
+        while($rand <= 90 && $rand >= 30)
+            $rand = rand(0,360);
+        return $rand;
+    });
 });

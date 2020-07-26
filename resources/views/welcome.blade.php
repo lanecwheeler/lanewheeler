@@ -11,12 +11,7 @@
 
         <style>
             :root {
-                --base-hue-color: <?
-                $rand = rand(0,360);
-                while($rand <= 90 && $rand >= 30)
-                    $rand = rand(0,360);
-                echo $rand;
-                ?>;
+                --base-hue-color: {{$rand}};
                 --total: 300;
             }
         </style>
