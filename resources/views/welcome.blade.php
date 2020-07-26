@@ -7,8 +7,19 @@
         <title>{{$title ?? 'that_one_dev'}}</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&amp;display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&amp;display=swap&family=Bebas+Neue&display=swap" rel="stylesheet">
 
+        <style>
+            :root {
+                --base-hue-color: <?
+                $rand = rand(0,360);
+                while($rand <= 90 && $rand >= 30)
+                    $rand = rand(0,360);
+                echo $rand;
+                ?>;
+                --total: 300;
+            }
+        </style>
 
     </head>
     <body>

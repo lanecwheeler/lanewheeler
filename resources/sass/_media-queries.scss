@@ -1,0 +1,18 @@
+/**
+    Media Queries
+**/
+@mixin mq-max($size: $small-max-bp) {
+  @media (max-width: #{$size}) { @content; }
+}
+@mixin mq-min($size: $small-min-bp) {
+  @media (min-width: #{$size}) { @content; }
+}
+@mixin mq-max-min($max: $small-max-bp, $min: $small-min-bp) {
+  @media (max-width: #{$max}) and (min-width: #{$min}) { @content; }
+}
+@mixin mq-min-height($size: $section-min-height) {
+  @media screen and (min-height: $size) { @content; }
+}
+@mixin mq-max-height($size: ($section-min-height - 1)) {
+  @media screen and (max-height: $size) { @content; }
+}

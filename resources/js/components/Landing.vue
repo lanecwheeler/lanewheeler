@@ -1,7 +1,7 @@
 <!-- Use preprocessors via the lang attribute! e.g. <template lang="pug"> -->
 <template>
     <div class="stage">
-        <div class="container">
+        <div class="container" :class="{'open' : currentSide !== 0}">
             <div class="cubebounce">
                 <div :class="{'no-transition' : this.resetting }"
                      :style="'-webkit-transform: rotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg)'"
@@ -11,7 +11,7 @@
                         <span>{{section.title}}</span>
                     </div>
                     <div class='wrap'>
-                        <div :key="index" class='c' v-for="index in 300"></div>
+                        <div :key="index" class='c' v-for="index in totalPoints"></div>
                     </div>
                 </div>
             </div>
@@ -23,12 +23,18 @@
                     <i @click="rotateCube('right')" class="fas fa-angle-right"></i>
                     <i @click="resetCube" class="fas fa-redo"></i> -->
             <div class="sidelist">
-                <span @click="rotate(i)" v-for="section, i in sections">{{i}}. {{section.title}}</span>
+                <span @click="rotate(i)"
+                      :class="{'active' : currentSide === i}"
+                      v-for="section, i in sections">
+                    {{i}}. {{section.title}}
+                </span>
             </div>
         </div>
-        <div class="content">
+        <div class="content" :class="{'hidden' : currentSide === 0}">
             <transition name="fade" mode="out-in">
-                <component :is="component"></component>
+                <keep-alive>
+                    <component :is="component"></component>
+                </keep-alive>
             </transition>
         </div>
     </div>
@@ -72,6 +78,9 @@
                 currentSide: 0,
                 xDown: null,
                 yDown: null,
+
+                randColor: Math.random() * 180,
+                totalPoints: 300,
 
                 component: Home,
             };
@@ -211,6 +220,7 @@
                 this.currentSide = i;
                 this.component = this.sections[i].section;
                 let timeout = 0;
+
                 if (random) {
                     this.rotateRandom();
                     timeout = 1000;
@@ -315,11 +325,96 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: radial-gradient(circle, rgba(34, 34, 34, 1) 0%, rgba(3, 3, 6, 1) 62%, rgba(0, 0, 0, 1) 100%);
         perspective: 500px;
         font-family: sans-serif;
-        transition: all .3s ease;
+        transition: all 1s ease;
+    }
 
+    .content {
+        right: 1em;
+        background: rgba(0,0,0,1);
+        color: white;
+        font-family: sans-serif;
+        flex: 1 0 50%;
+        transition: all 1s ease;
+        box-shadow: -5px 0px 25px 0px black;
+        max-width: 100vw;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .photo {
+            flex: 1 0 30%;
+            position: relative;
+
+            @media (min-width: 1400px) {
+                min-height: 400px;
+            }
+
+            .img-wrapper {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                position: relative;
+            }
+
+            img {
+                position: absolute;
+                bottom: -30%;
+                left: -50%;
+                width: 100vw;
+            }
+
+            &:after {
+                content: ' ';
+                display: block;
+                position: absolute;
+                bottom: -50;
+                left: 0;
+                width: 100%;
+                height: 50px;
+                background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+                z-index: 3;
+            }
+        }
+
+        .text {
+            flex: 0 1 70%;
+            padding: 3em 2em 2em 2em;
+            overflow: scroll;
+            position: relative;
+        }
+
+        h1, h2 {
+            /*font-family: "Bebas Neue", sans-serif;*/
+            font-family: "Major Mono Display", sans-serif;
+            /*text-transform: uppercase;*/
+            position: relative;
+            z-index: 2;
+            color: hsla(var(--base-hue-color), 100%, 50%, 1);
+            font-size: 2.5em;
+            letter-spacing: 5px;
+            margin-top: 0;
+
+            span.stroke {
+                position: absolute;
+                color: transparent;
+                -webkit-text-stroke: 0.1px rgba(255,255,255,.1);
+                transform: scale(1.25);
+                z-index: -1;
+                top: 0.25em;
+                left: 1em;
+            }
+        }
+
+        .emphasized {
+            color: hsla(var(--base-hue-color), 100%, 50%, 1);
+            font-size: 1.25em;
+            font-weight: 700;
+        }
     }
 
     .cubebounce {
@@ -333,14 +428,13 @@
         position: relative;
         transform-style: preserve-3d;
         transition: transform 1s ease;
-        // transform: rotateX(45deg) rotateY(45deg) rotateZ(30deg);
-        // animation: float 5s infinite linear;
 
         .cube__face {
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 1px solid rgba(255, 255, 255, .25);
+            /*border: 1px solid rgba(255, 255, 255, .25);*/
+            border: 1px solid hsla(var(--base-hue-color), 100%, 50%, .5);
             color: rgba(255, 255, 255, .75);
             font-family: 'Major Mono Display', monospace;
             display: flex;
@@ -399,11 +493,14 @@
     }
 
     // begin particle sphere
-    $total: 100; // total particles
+    $total: 300; // total particles
     $orb-size: 75px;
-    $particle-size: 1px;
+    $particle-size: 2px;
     $time: 14s;
-    $base-hue: random(180); // change for diff colors (180 is nice)
+
+    /*.sphereBaseHue {*/
+    /*    color: hsla(var(--base-hue-color), 100%, 50%, 1);*/
+    /*}*/
 
     .wrap {
         position: relative;
@@ -434,12 +531,11 @@
     @for $i from 1 through $total {
         $z: (random(360) * 1deg); // random angle to rotateZ
         $y: (random(360) * 1deg); // random to rotateX
-        $hue: ((40/$total * $i) + $base-hue); // set hue
 
         .c:nth-child(#{$i}) { // grab the nth particle
             animation: orbit#{$i} $time infinite;
             animation-delay: ($i * .01s);
-            background-color: hsla($hue, 100%, 50%, 1);
+            background-color: hsla(calc((40/var(--total) * #{$i}) + var(--base-hue-color)), 100%, 50%, 1);
         }
 
         @keyframes orbit#{$i}{
@@ -463,7 +559,7 @@
         position: fixed;
         top: 0;
         width: 100%;
-        height: 100vh;
+        /*height: 100vh;*/
         z-index: 2;
 
         i {
@@ -509,10 +605,6 @@
         transition: none !important;
     }
 
-    .swing-pers {
-        perspective: 2000px;
-    }
-
     .sidelist {
         position: absolute;
         top: 1em;
@@ -527,8 +619,12 @@
             transition: all .3s ease;
             line-height: 1.25em;
 
+            &.active {
+                color: hsla(var(--base-hue-color), 100%, 50%, .5);
+            }
+
             &:hover {
-                color: rgba(255, 255, 255, .6)
+                color: hsla(var(--base-hue-color), 100%, 50%, 1);
             }
         }
     }
@@ -536,7 +632,15 @@
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
     }
+
     .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
         opacity: 0;
     }
+
+    .hidden {
+        flex: 0 0 0;
+        opacity: 0;
+        max-width: 0;
+    }
+
 </style>
