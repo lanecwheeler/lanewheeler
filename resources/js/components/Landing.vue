@@ -44,8 +44,8 @@
     const Home = '';
     import AboutMe from './AboutMe';
     import Projects from './Projects';
-    import ContactMe from './Projects';
-    import Toolkit from './Projects';
+    import ContactMe from './ContactMe';
+    import ColorMatch from './ColorMatch';
     import Gallery from './Projects';
 
     export default {
@@ -64,7 +64,7 @@
                     {title: 'About Me', section: 'AboutMe', side: 'right',}, // side 2
                     {title: 'Projects', section: 'Projects', side: 'back',}, // side 3
                     {title: 'Contact Me', section: 'ContactMe', side: 'left',}, // side 4
-                    {title: 'Toolkit', section: 'Toolkit', side: 'top',}, // side 5
+                    {title: 'Colors Game', section: 'ColorMatch', side: 'top',}, // side 5
                     {title: 'Gallery', section: 'Gallery', side: 'bottom',}, // side 6
                 ],
                 sides: [
@@ -101,7 +101,7 @@
             AboutMe,
             Projects,
             ContactMe,
-            Toolkit,
+            ColorMatch,
             Gallery,
         },
         methods: {
@@ -217,6 +217,7 @@
                 this.z = 0;
             },
             rotate(i, random = true) {
+                random = false;
                 this.currentSide = i;
                 this.component = this.sections[i].section;
                 let timeout = 0;
@@ -338,7 +339,7 @@
         flex: 1 0 50%;
         transition: all 1s ease;
         box-shadow: -5px 0px 25px 0px black;
-        max-width: 100vw;
+        max-width: 50vw;
 
         & > div {
             display: flex;
@@ -641,6 +642,7 @@
         flex: 0 0 0;
         opacity: 0;
         max-width: 0;
+        overflow: hidden;
     }
 
 </style>

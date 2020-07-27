@@ -22,7 +22,7 @@
 
              <span class="emphasized">Finally, I'm an artist.</span>
                 Now, I'm <em>not</em> talking about making the next Mona Lisa (which, c'mon. She's really not <em>that</em> impressive).
-                Along with coding, I enjoy creating websites that feel good and look good.
+                My art is creating websites that feel good and look good.
                 I am well versed in Photoshop and Illustrator (what can I say, Adobe makes a good product)
                 and do a modicum of (average) art with them in my free time. This and I do quite a bit of music. Not really relevant, but still fun...
             </p>
@@ -37,8 +37,8 @@
     export default {
         data() {
             return {
-                title: 'hi, i\'m lane. let\'s keep it short.',
-                photoUrl: 'https://images.unsplash.com/photo-1541327050432-73a9b9812047?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80',
+                title: 'let\'s keep it short.',
+                photoUrl: '/img/me-cooler.jpg',
             }
         }
     }
@@ -51,7 +51,7 @@
     }
     .photo {
         background-size: cover;
-        background-position: 30% 50%;
+        background-position: 50% 30%;
         min-height: 30vh;
     }
 
