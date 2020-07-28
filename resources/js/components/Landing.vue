@@ -627,6 +627,7 @@
             top: 0;
             right: 0;
             outline: none;
+            display: none;
 
             @media (max-width: $xs-bp) {
                 display: inline-block;
@@ -783,8 +784,10 @@
         overflow: hidden;
     }
 
-    .no-show {
-        top: -50vh !important;
+    @media (max-width: $xs-bp) {
+        .no-show {
+            top: -50vh !important;
+        }
     }
 
 </style>
