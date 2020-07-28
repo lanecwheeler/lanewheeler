@@ -42,13 +42,13 @@
                     {diff: 'Easy', squares: 3},
                     {diff: 'Medium', squares: 6},
                     {diff: 'Hard', squares: 9},
-                    {diff: 'Unreal', squares: 16},
+                    {diff: 'Unreal', squares: 60},
                 ],
                 codeTypes : ['RGB', 'HEX'],
                 activeLvl: 1,
                 activeType: 0,
                 currentColors: [],
-                message: 'Try and match the color code shown to the colored square below!',
+                message: 'Try and match the color code shown above to the colored square below!',
             }
         },
         computed: {
@@ -60,7 +60,7 @@
         },
         methods: {
             generateColors() {
-                this.message = 'Try and match the color code shown to the colored square below!'
+                this.message = 'Try and match the color code shown above to the colored square below!'
                 this.currentColors = [];
                 for (var i = 0; i < this.levels[this.activeLvl].squares; i++) {
                     switch(this.activeType) {
@@ -116,6 +116,7 @@
         margin: 0;
         /*add space to top and bottom of h1*/
         padding: 1.25em 0;
+        z-index: 1;
     }
 
     #colorDisplay {
@@ -186,8 +187,8 @@
     }
 
     .square {
-        height: 100vw;
-        width: 100vw;
+        height: 31.3vw;
+        width: 31.3vw;
         max-height: 150px;
         max-width: 150px;
         margin: 1em;

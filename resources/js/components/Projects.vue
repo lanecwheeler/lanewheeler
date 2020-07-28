@@ -119,6 +119,11 @@
 </script>
 
 <style lang="scss" scoped>
+
+    $md-bp: 1000px;
+    $sm-bp: 768px;
+    $xs-bp: 650px;
+
     .wrapper {
         display: flex;
         justify-content: space-between;
@@ -283,6 +288,30 @@
             }
 
         }
+    }
+
+    @media (max-width: $sm-bp) {
+        h1 {
+            z-index: 0;
+        }
+        .projectWrapper {
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .prev, .next {
+                order: 1;
+                flex: 1 0 50%;
+                height: auto;
+                margin: .5em 0;
+                z-index: 2;
+            }
+            .majorProject, .minorProject {
+                order: 2;
+                flex: 1 0 100%;
+                margin: 1em 0;
+            }
+        }
+
     }
 
 </style>

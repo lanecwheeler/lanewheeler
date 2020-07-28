@@ -16,13 +16,20 @@
                 </div>
             </div>
         </div>
-        <div class="arrows">
+        <div class="nav">
+            <div class="hamburger-wrapper" @click="toggleNav">
+                <button class="hamburger" :class="{'is-active' : navOpen, 'no-show' : currentSide === 0}" type="button">
+                  <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                  </span>
+                </button>
+            </div>
             <!--         <i @click="rotateCube('up')" class="fas fa-angle-up"></i>
                     <i @click="rotateCube('down')" class="fas fa-angle-down"></i>
                     <i @click="rotateCube('left')" class="fas fa-angle-left"></i>
                     <i @click="rotateCube('right')" class="fas fa-angle-right"></i>
                     <i @click="resetCube" class="fas fa-redo"></i> -->
-            <div class="sidelist">
+            <div class="sidelist" :class="{'no-show' : currentSide !== 0 && !navOpen, 'nav-opened' : navOpen}">
                 <span @click="rotate(i)"
                       :class="{'active' : currentSide === i}"
                       v-for="section, i in sections">
@@ -46,7 +53,7 @@
     import Projects from './Projects';
     import ContactMe from './ContactMe';
     import ColorMatch from './ColorMatch';
-    import Gallery from './Projects';
+    import Socials from './Socials';
 
     export default {
         name: 'Landing',
@@ -60,12 +67,12 @@
                 resetting: false,
                 moving: false,
                 sections: [
-                    {title: 'hello.', section: '', side: 'front',}, // side 1
-                    {title: 'About Me', section: 'AboutMe', side: 'right',}, // side 2
-                    {title: 'Projects', section: 'Projects', side: 'back',}, // side 3
-                    {title: 'Contact Me', section: 'ContactMe', side: 'left',}, // side 4
-                    {title: 'Colors Game', section: 'ColorMatch', side: 'top',}, // side 5
-                    {title: 'Gallery', section: 'Gallery', side: 'bottom',}, // side 6
+                    {title: 'heLLo.', section: '', side: 'front',}, // side 1
+                    {title: 'AboUT Me', section: 'AboutMe', side: 'right',}, // side 2
+                    {title: 'ProJEctS', section: 'Projects', side: 'back',}, // side 3
+                    {title: 'COntaCt ME', section: 'ContactMe', side: 'left',}, // side 4
+                    {title: 'ColORs GaMe', section: 'ColorMatch', side: 'top',}, // side 5
+                    {title: 'SoCial MEdiA', section: 'Socials', side: 'bottom',}, // side 6
                 ],
                 sides: [
                     {x: 0, y: 0, z: 0}, // side 1
@@ -80,9 +87,10 @@
                 yDown: null,
 
                 randColor: Math.random() * 180,
-                totalPoints: 300,
+                totalPoints: 100,
 
                 component: Home,
+                navOpen: false,
             };
         },
         computed: {
@@ -102,9 +110,12 @@
             Projects,
             ContactMe,
             ColorMatch,
-            Gallery,
+            Socials,
         },
         methods: {
+            toggleNav() {
+                this.navOpen = !this.navOpen;
+            },
             // this is for when I will eventually expand this to give the user control over the rotation via arrows
             rotateCube(dir, e) {
                 if (e) var key = e.which;
@@ -207,7 +218,7 @@
                 }, timeout + 1250);
 
                 setTimeout(() => {
-                    this.sections[0].title = 'hello.'
+                    this.sections[0].title = 'heLLo.'
                 }, timeout + 2250);
 
             },
@@ -217,6 +228,7 @@
                 this.z = 0;
             },
             rotate(i, random = true) {
+                this.navOpen = false;
                 random = false;
                 this.currentSide = i;
                 this.component = this.sections[i].section;
@@ -303,6 +315,11 @@
 
 <!-- Use preprocessors via the lang attribute! e.g. <style lang="scss"> -->
 <style lang="scss">
+
+    $md-bp: 1000px;
+    $sm-bp: 768px;
+    $xs-bp: 650px;
+
     html, body {
         margin: 0;
         padding: 0;
@@ -329,6 +346,17 @@
         perspective: 500px;
         font-family: sans-serif;
         transition: all 1s ease;
+        max-width: 100vw;
+
+        &.open {
+            max-width: 50vw;
+        }
+
+        @media (max-width: $xs-bp) {
+            &.open {
+                max-width: 0;
+            }
+        }
     }
 
     .content {
@@ -340,6 +368,10 @@
         transition: all 1s ease;
         box-shadow: -5px 0px 25px 0px black;
         max-width: 50vw;
+
+        @media (max-width: $xs-bp) {
+            max-width: 100vw;
+        }
 
         & > div {
             display: flex;
@@ -400,6 +432,18 @@
             letter-spacing: 5px;
             margin-top: 0;
 
+            @media (max-width: $md-bp) {
+                font-size: 2em;
+            }
+
+            @media (max-width: $sm-bp) {
+                font-size: 1.5em;
+            }
+
+            @media (max-width: $xs-bp) {
+                font-size: 1.25em;
+            }
+
             span.stroke {
                 position: absolute;
                 color: transparent;
@@ -441,7 +485,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(10, 10, 10, .55);
+            background: rgba(10, 10, 10, .25);
             transition: background .2s ease;
 
             &.cube__face--front {
@@ -556,12 +600,96 @@
         }
     }
 
-    .arrows {
+    .nav {
         position: fixed;
         top: 0;
         width: 100%;
         /*height: 100vh;*/
         z-index: 2;
+
+        .hamburger-wrapper {
+            transition: all .3s ease;
+        }
+
+        .hamburger {
+            padding: 15px 15px;
+            cursor: pointer;
+            transition: opacity .15s linear, filter .15s linear, top .3s ease;
+            font: inherit;
+            color: inherit;
+            text-transform: none;
+            background-color: rgba(0,0,0,1);
+            border: 0;
+            margin: 0;
+            overflow: visible;
+
+            position: absolute;
+            top: 0;
+            right: 0;
+            outline: none;
+
+            @media (max-width: $xs-bp) {
+                display: inline-block;
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &.is-active {
+
+                &:hover {
+                    opacity: 1;
+                }
+
+                .hamburger-inner {
+                    background-color: hsla(var(--base-hue-color), 100%, 50%, 1);
+                }
+
+                .hamburger-inner::before,
+                .hamburger-inner::after {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        .hamburger-box {
+            width: 30px;
+            height: 22px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .hamburger-inner {
+            display: block;
+            top: 50%;
+            margin-top: -2px;
+
+            &, &::before, &::after {
+                width: 30px;
+                height: 2px;
+                background-color: hsla(var(--base-hue-color), 100%, 50%, 1);
+                border-radius: 0;
+                position: absolute;
+                transition-property: transform;
+                transition-duration: 0.15s;
+                transition-timing-function: ease;
+                transition: all .3s ease;
+            }
+
+            &::before, &::after {
+                content: "";
+                display: block;
+            }
+
+            &::before {
+                top: -10px;
+            }
+
+            &::after {
+                bottom: -10px;
+            }
+        }
 
         i {
             color: rgba(255, 255, 255, .5);
@@ -608,9 +736,19 @@
 
     .sidelist {
         position: absolute;
-        top: 1em;
-        left: 1em;
+        padding: 1.5em;
+        top: 0;
+        left: 0;
         z-index: 3;
+        transition: all .3s ease;
+
+        @media (max-width: $xs-bp) {
+            font-size: 1.25em;
+        }
+
+        &.nav-opened {
+            background: rgba(0,0,0,1);
+        }
 
         span {
             display: block;
@@ -643,6 +781,10 @@
         opacity: 0;
         max-width: 0;
         overflow: hidden;
+    }
+
+    .no-show {
+        top: -50vh !important;
     }
 
 </style>
