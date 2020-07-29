@@ -20,6 +20,7 @@ Route::post('/contact-me/send-it', '\App\Http\Controllers\Landing@sendContact');
 Route::group(['prefix' => 'webhook'], function() {
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/', '\App\Http\Controllers\JoeyPepperoni@crcChallenge');
+        Route::get('/startRegister', '\App\Http\Controllers\JoeyPepperoni@register');
 
     });
 
