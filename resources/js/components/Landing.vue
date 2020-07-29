@@ -320,6 +320,10 @@
     $sm-bp: 768px;
     $xs-bp: 650px;
 
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
     html, body {
         margin: 0;
         padding: 0;
@@ -744,7 +748,7 @@
         transition: all .3s ease;
 
         @media (max-width: $xs-bp) {
-            font-size: 1.25em;
+            font-size: 1em;
         }
 
         &.nav-opened {

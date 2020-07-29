@@ -74,6 +74,26 @@
         &:hover .shade{
             left: calc(100% - 1.5em);
 
+            @media (max-width: $xs-bp) {
+                left: 0;
+
+                &[data-service="Facebook"] {
+                    background: rgba(59, 89, 152, .25) !important;
+                }
+
+                &[data-service="Twitter"] {
+                    background: rgba(29, 161, 242, .25) !important;
+                }
+
+                &[data-service="Instagram"] {
+                    background: rgba(237, 73, 86, .25) !important;
+                }
+
+                &[data-service="Linkedin"] {
+                    background: rgba(0, 115, 177, .25) !important;
+                }
+            }
+
             &[data-service="Facebook"], &[data-service="Twitter"], &[data-service="Instagram"], &[data-service="Linkedin"] {
                 background: rgba(0,0,0,1);
             }
@@ -98,6 +118,11 @@
 
             @media (max-width: $xs-bp) {
                 max-width: 100vw;
+                writing-mode: lr;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2em;
             }
 
             &[data-service="Facebook"] {

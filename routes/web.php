@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', '\App\Http\Controllers\Landing@index');
 Route::get('/colors', '\App\Http\Controllers\Landing@colors');
 Route::post('/contact-me/send-it', '\App\Http\Controllers\Landing@sendContact');
+
+Route::group(['prefix' => 'webhook'], function() {
+    Route::group(['prefix' => 'twitter'], function() {
+        Route::get('/', '\App\Http\Controllers\JoeyPepperoni@crcChallenge');
+
+    });
+
+});
