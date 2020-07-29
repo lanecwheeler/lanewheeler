@@ -19,7 +19,7 @@ class JoeyPepperoni extends Controller
         ]);
 
         if($crc_token){
-            $hash = base64_encode(hash_hmac('sha256', $crc_token, env('TWITTER_SECRET')));
+            $hash = base64_encode(hash_hmac('sha256', $crc_token, config('twitter.consumer_secret')));
 
             return response()->json(['response_token' => 'sha256='.$hash]);
         }else{
