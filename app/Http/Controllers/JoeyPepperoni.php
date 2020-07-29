@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Log;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class JoeyPepperoni extends Controller
         Log::create([
             'url' => $request->url(),
             'method' => $request->method(),
-            'body' => $request->getContent(),
+            'body' => json_encode($request->getContent()),
             'ip' => $request->ip()
         ]);
 
