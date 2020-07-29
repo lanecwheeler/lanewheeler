@@ -14,7 +14,7 @@ class JoeyPepperoni extends Controller
         Log::create([
             'url' => $request->url(),
             'method' => $request->method(),
-            'body' => json_encode($request->getContent()),
+            'body' => json_encode($request->all()),
             'ip' => $request->ip()
         ]);
 
