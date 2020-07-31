@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class JoeyPepperoni extends Controller
 {
+    // https://github.com/twitterdev/account-activity-dashboard
+    // this repo will save your life for registering webhooks/subscriptions
+
     public function crcChallenge(Request $request) {
         $crc_token = $request->get('crc_token');
 
@@ -27,6 +30,19 @@ class JoeyPepperoni extends Controller
             return response('Error: crc_token is missing from request', 400);
         }
 
+    }
+
+    public function addSub(Request $request) {
+        $connection = new TwitterOAuth(
+            config('twitter.consumer_key'),
+            config('twitter.consumer_secret'),
+            config('twitter.access_token'),
+            config('twitter.access_secret')
+        );
+
+        $connection->post('/1.1/account_activity/all/AyJoeyPepperoni/subscriptions.json','');
+
+        return response()->json($connection->getLastBody(), 200);
     }
 
     public function register() {

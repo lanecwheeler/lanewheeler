@@ -21,6 +21,7 @@ Route::group(['prefix' => 'webhook'], function() {
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/', '\App\Http\Controllers\JoeyPepperoni@crcChallenge');
         Route::get('/startRegister', '\App\Http\Controllers\JoeyPepperoni@register');
+        Route::get('/startSubscibe', '\App\Http\Controllers\JoeyPepperoni@addSub');
 
     });
 

@@ -324,6 +324,16 @@
         display: none;
     }
 
+    /*:root {*/
+    /*    --base-hue-color: 0;*/
+    /*    animation: cycleColor 5s linear infinite;*/
+    /*}*/
+
+    /*@keyframes cycleColor {*/
+    /*    from {--base-hue-color: 0;}*/
+    /*    to {--base-hue-color: 360;}*/
+    /*}*/
+
     html, body {
         margin: 0;
         padding: 0;
@@ -403,6 +413,16 @@
                 bottom: -30%;
                 left: -50%;
                 width: 100vw;
+
+                @media (max-width: $sm-bp) {
+                    bottom: -20%;
+                }
+
+                @media (max-width: $xs-bp) {
+                    bottom: -18%;
+                    left: -53%;
+                    width: 180vw;
+                }
             }
 
             &:after {

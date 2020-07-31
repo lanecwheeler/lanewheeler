@@ -10,13 +10,12 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&amp;display=swap&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-        <style>
+        <style root>
             :root {
                 --base-hue-color: {{$rand}};
                 --total: 300;
             }
         </style>
-
     </head>
     <body>
         <div class="flex-center position-ref full-height" id="app">
