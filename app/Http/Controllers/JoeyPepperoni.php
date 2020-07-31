@@ -40,7 +40,7 @@ class JoeyPepperoni extends Controller
             config('twitter.access_secret')
         );
 
-        $connection->post('/1.1/account_activity/all/AyJoeyPepperoni/subscriptions.json','');
+        $connection->post('/1.1/account_activity/all/AyJoeyPepperoni/subscriptions.json',[]);
 
         return response()->json($connection->getLastBody(), 200);
     }
