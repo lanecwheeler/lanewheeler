@@ -6,6 +6,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class JoeyPepperoni extends Controller
 {
@@ -39,8 +40,11 @@ class JoeyPepperoni extends Controller
             config('twitter.access_token'),
             config('twitter.access_secret')
         );
+        $content = $connection->post('account_activity/all/AyJoeyPepperoni/subscriptions');
 
-        $connection->post('/1.1/account_activity/all/AyJoeyPepperoni/subscriptions.json',[]);
+        dd($connection, $content);
+
+        $connection->post('/account_activity/all/AyJoeyPepperoni/subscriptions.json',[]);
 
         return response()->json($connection->getLastBody(), 200);
     }
@@ -49,5 +53,22 @@ class JoeyPepperoni extends Controller
         $client = new Client(['base_uri' => 'https://api.twitter.com/1.1/account_activity/all/']);
 
         $response = $client->post('AyJoeyPepperoni/webhooks.json?url=https://lanewheeler.dev/webhook/twitter');
+    }
+
+    public function activity(Request $request) {
+        Log::create([
+            'url' => $request->url(),
+            'method' => $request->method(),
+            'body' => $request->getContent(),
+            'ip' => $request->ip(),
+        ]);
+
+        Mail::send('emails.contact', [
+            'request' => $request,
+        ], function($message) {
+            $message->to('twitter@lanewheeler.dev', 'Lane')
+                ->subject('New Activity');
+            $message->from(config('mail.from.address'),'theHub');
+        });
     }
 }
