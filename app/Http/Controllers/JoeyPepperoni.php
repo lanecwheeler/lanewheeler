@@ -19,7 +19,7 @@ class JoeyPepperoni extends Controller
         Log::create([
             'url' => $request->url(),
             'method' => $request->method(),
-            'body' => json_encode($request->all()),
+            'body' => 'crcChallenge: ' . json_encode($request->all()),
             'ip' => $request->ip()
         ]);
 
@@ -59,7 +59,7 @@ class JoeyPepperoni extends Controller
         Log::create([
             'url' => $request->url(),
             'method' => $request->method(),
-            'body' => $request->getContent(),
+            'body' => 'activity: ' . $request->getContent(),
             'ip' => $request->ip(),
         ]);
 
