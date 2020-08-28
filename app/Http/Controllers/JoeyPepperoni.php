@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Errors;
 use App\joeyPepName;
 use App\Log;
 use GuzzleHttp\Client;
@@ -124,7 +125,16 @@ class JoeyPepperoni extends Controller
             config('twitter.access_secret')
         );
 
-        $content = $connection->post("statuses/update", ["status" => "Well, if it isn't " . $name . '!', "in_reply_to_status_id" => $tweetId]);
+        try {
+            $content = $connection->post("statuses/update", ["status" => "Well, if it isn't " . $name . '!', "in_reply_to_status_id" => $tweetId]);
+        } catch (\Throwable $ex) {
+            Errors::create([
+                'page' => $request->path(),
+                'error_code' => $ex->getCode(),
+                'error_message' => $ex->getMessage(),
+                'ip' => $request->ip(),
+            ]);
+        }
     }
 
     public function getHooks(Request $request) {
