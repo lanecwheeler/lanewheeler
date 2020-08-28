@@ -9,6 +9,7 @@ use App\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use mysql_xdevapi\Exception;
 
 class JoeyPepperoni extends Controller
 {
@@ -108,6 +109,9 @@ class JoeyPepperoni extends Controller
             $handle = $json->tweet_create_events[0]->user->screen_name;
             $uid = $json->tweet_create_events[0]->user->id;
 
+            if($handle = 'AyJoeyPepperoni')
+                return;
+
             $joeyPepName = JoeyPepName::where('uid', $uid)->first();
 
             if($joeyPepName) $name = $joeyPepName->name;
@@ -134,6 +138,7 @@ class JoeyPepperoni extends Controller
                 'page' => $request->path(),
                 'error_code' => $ex->getCode(),
                 'error_message' => $ex->getMessage(),
+                'request' => implode(', ', $request->all());
                 'ip' => $request->ip(),
             ]);
         }

@@ -10,6 +10,7 @@ class Errors extends Model
         'page',
         'error_code',
         'error_message',
+        'request',
         'ip',
     ];
 }
