@@ -138,7 +138,7 @@ class JoeyPepperoni extends Controller
                 'page' => $request->path(),
                 'error_code' => $ex->getCode(),
                 'error_message' => $ex->getMessage(),
-                'request' => implode(', ', $request->all());
+                'request' => implode(', ', $request->all()),
                 'ip' => $request->ip(),
             ]);
         }
