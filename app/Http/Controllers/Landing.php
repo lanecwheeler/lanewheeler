@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contacts;
 use App\Errors;
+use App\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,6 +16,12 @@ class Landing extends Controller
         while($rand <= 90 && $rand >= 30)
             $rand = rand(0,360);
         return view('landing')->with('rand', $rand);
+    }
+
+    public function showLogs() {
+        $logs = Log::all();
+
+        return view('logs')->with('logs', $logs);
     }
 
     public function colors() {

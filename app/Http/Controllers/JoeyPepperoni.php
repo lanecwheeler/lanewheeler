@@ -80,11 +80,24 @@ class JoeyPepperoni extends Controller
 
         $content = $connection->post("statuses/update", ["text" => "hello world"]);
 
-        Log::create([
-            'url' => $connection->response->apiPath,
-            'method' => '',
-            'body' => json_decode($content),
-            'ip' => '',
-        ]);
+//        Log::create([
+//            'url' => $connection->response->apiPath,
+//            'method' => '',
+//            'body' => json_decode($content),
+//            'ip' => '',
+//        ]);
+    }
+
+    public function getHooks(Request $request) {
+        $connection = new TwitterOAuth(
+            config('twitter.consumer_key'),
+            config('twitter.consumer_secret'),
+            config('twitter.access_token'),
+            config('twitter.access_secret')
+        );
+
+        $content = $connection->get('account_activity/all/AyJoeyPepperoni/subscriptions');
+
+        dd($connection, $content);
     }
 }
