@@ -12,11 +12,14 @@
                 background: white;
                 margin: 1em;
                 border: 1px solid red;
+                max-width: 500px;
             }
 
             .logs td {
                 font-family: "Bebas Neue", "sans-serif";
                 padding: .25em;
+                max-height: 150px;
+                overflow: auto;
             }
         </style>
     </head>
