@@ -17,6 +17,7 @@ Route::get('/', '\App\Http\Controllers\Landing@index');
 Route::get('/colors', '\App\Http\Controllers\Landing@colors');
 Route::post('/contact-me/send-it', '\App\Http\Controllers\Landing@sendContact');
 Route::get('/accessLogs', '\App\Http\Controllers\Landing@showLogs');
+Route::get('/errorLogs', '\App\Http\Controllers\Landing@showErrorLogs');
 
 Route::group(['prefix' => 'webhook'], function() {
     Route::group(['prefix' => 'twitter'], function() {

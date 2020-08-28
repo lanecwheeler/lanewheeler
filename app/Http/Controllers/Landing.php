@@ -24,6 +24,12 @@ class Landing extends Controller
         return view('logs')->with('logs', $logs);
     }
 
+    public function showErrorLogs() {
+        $logs = Errors::all();
+
+        return view('logs')->with('logs', $logs);
+    }
+
     public function colors() {
         return view('colors');
     }
