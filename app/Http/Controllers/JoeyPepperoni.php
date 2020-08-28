@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Errors;
-use App\joeyPepName;
+use App\JoeyPepName;
 use App\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -108,12 +108,12 @@ class JoeyPepperoni extends Controller
             $handle = $json->tweet_create_events[0]->user->screen_name;
             $uid = $json->tweet_create_events[0]->user->id;
 
-            $joeyPepName = joeyPepName::where('uid', $uid)->first();
+            $joeyPepName = JoeyPepName::where('uid', $uid)->first();
 
             if($joeyPepName) $name = $joeyPepName->name;
             else {
                 $name = $this->genName();
-                joeyPepName::create([
+                JoeyPepName::create([
                     'uid' => $uid,
                     'name' => $name,
                 ]);
