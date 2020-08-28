@@ -31,6 +31,7 @@
                     <th>page</th>
                     <th>error_code</th>
                     <th>error_message</th>
+                    <th>request</th>
                     <th>ip</th>
                     <th>crated at</th>
                     <th>updated at</th>
@@ -43,6 +44,7 @@
                         <td>{{$log->page}}</td>
                         <td>{{$log->error_code}}</td>
                         <td>{{$log->error_message}}</td>
+                        <td>{{$log->request}}</td>
                         <td>{{$log->ip}}</td>
                         <td>{{$log->crated_at}}</td>
                         <td>{{$log->updated_at}}</td>
