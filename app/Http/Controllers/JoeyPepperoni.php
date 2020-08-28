@@ -95,38 +95,40 @@ class JoeyPepperoni extends Controller
     }
 
     public function activity(Request $request) {
-        Log::create([
-            'url' => $request->url(),
-            'method' => $request->method(),
-            'body' => 'activity: ' . $request->getContent(),
-            'ip' => $request->ip(),
-        ]);
-
-        $json = json_decode($request->getContent());
-        $tweetId = $json->tweet_create_events[0]->id;
-        $uid = $json->tweet_create_events[0]->user->id;
-
-        $joeyPepName = joeyPepName::where('uid', $uid)->first();
-
-        if($joeyPepName) $name = $joeyPepName->name;
-        else {
-            $name = $this->genName();
-            joeyPepName::create([
-                'uid' => $uid,
-                'name' => $name,
-            ]);
-        }
-
-
-        $connection = new TwitterOAuth(
-            config('twitter.consumer_key'),
-            config('twitter.consumer_secret'),
-            config('twitter.access_token'),
-            config('twitter.access_secret')
-        );
-
         try {
-            $content = $connection->post("statuses/update", ["status" => "Well, if it isn't " . $name . '!', "in_reply_to_status_id" => $tweetId]);
+            Log::create([
+                'url' => $request->url(),
+                'method' => $request->method(),
+                'body' => 'activity: ' . $request->getContent(),
+                'ip' => $request->ip(),
+            ]);
+
+            $json = json_decode($request->getContent());
+            $tweetId = $json->tweet_create_events[0]->id;
+            $handle = $json->tweet_create_events[0]->user->screen_name;
+            $uid = $json->tweet_create_events[0]->user->id;
+
+            $joeyPepName = joeyPepName::where('uid', $uid)->first();
+
+            if($joeyPepName) $name = $joeyPepName->name;
+            else {
+                $name = $this->genName();
+                joeyPepName::create([
+                    'uid' => $uid,
+                    'name' => $name,
+                ]);
+            }
+
+
+            $connection = new TwitterOAuth(
+                config('twitter.consumer_key'),
+                config('twitter.consumer_secret'),
+                config('twitter.access_token'),
+                config('twitter.access_secret')
+            );
+
+
+            $content = $connection->post("statuses/update", ["status" => '@' . $handle . " Well, if it isn't " . $name . '!']);
         } catch (\Throwable $ex) {
             Errors::create([
                 'page' => $request->path(),
