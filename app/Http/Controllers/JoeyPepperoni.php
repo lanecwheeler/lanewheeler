@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use App\joeyPepName;
 use App\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -55,6 +56,43 @@ class JoeyPepperoni extends Controller
         $response = $client->post('AyJoeyPepperoni/webhooks.json?url=https://lanewheeler.dev/webhook/twitter');
     }
 
+    public function genName() {
+        $names = file(public_path('FirstNames.txt'), FILE_IGNORE_NEW_LINES);
+        $foods = file(public_path('ItalianFoods.txt'), FILE_IGNORE_NEW_LINES);
+
+        $randomName = rand(0, count($names) - 1);
+        $alliteration = (($randomName % 2) === 0);
+
+        $selectedName = $names[$randomName];
+        if($alliteration) {
+            $oldFoods = $foods;
+            $foods = array_values(collect($foods)->reject(function($food) use ($selectedName) {
+               return substr($food, 0, 1) !== substr($selectedName, 0, 1);
+            })->toArray());
+        }
+
+        if(!count($foods) > 0)
+            $foods = $oldFoods;
+
+        $randomFood = rand(0, count($foods) - 1);
+        $selectedFood = $foods[$randomFood];
+
+        return ucfirst($selectedName) . ' ' . ucfirst($selectedFood);
+    }
+
+    public function tweetTest() {
+        $connection = new TwitterOAuth(
+            config('twitter.consumer_key'),
+            config('twitter.consumer_secret'),
+            config('twitter.access_token'),
+            config('twitter.access_secret')
+        );
+
+        $content = $connection->post("statuses/update", ["status" => "hello world"]);
+
+        dd($content);
+    }
+
     public function activity(Request $request) {
         Log::create([
             'url' => $request->url(),
@@ -63,13 +101,21 @@ class JoeyPepperoni extends Controller
             'ip' => $request->ip(),
         ]);
 
-        Mail::send('emails.contact', [
-            'request' => $request,
-        ], function($message) {
-            $message->to('twitter@lanewheeler.dev', 'Lane')
-                ->subject('New Activity');
-            $message->from(config('mail.from.address'),'theHub');
-        });
+        $json = json_decode($request->getContent());
+        $tweetId = $json->tweet_create_events[0]->id;
+        $uid = $json->tweet_create_events[0]->user->id;
+
+        $joeyPepName = joeyPepName::where('uid', $uid)->first();
+
+        if($joeyPepName) $name = $joeyPepName->name;
+        else {
+            $name = $this->genName();
+            joeyPepName::create([
+                'uid' => $uid,
+                'name' => $name,
+            ]);
+        }
+
 
         $connection = new TwitterOAuth(
             config('twitter.consumer_key'),
@@ -78,14 +124,7 @@ class JoeyPepperoni extends Controller
             config('twitter.access_secret')
         );
 
-        $content = $connection->post("statuses/update", ["text" => "hello world"]);
-
-//        Log::create([
-//            'url' => $connection->response->apiPath,
-//            'method' => '',
-//            'body' => json_decode($content),
-//            'ip' => '',
-//        ]);
+        $content = $connection->post("statuses/update", ["status" => "Well, if it isn't " . $name . '!', "in_reply_to_status_id" => $tweetId]);
     }
 
     public function getHooks(Request $request) {

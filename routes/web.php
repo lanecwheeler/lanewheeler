@@ -25,6 +25,8 @@ Route::group(['prefix' => 'webhook'], function() {
         Route::get('/startRegister', '\App\Http\Controllers\JoeyPepperoni@register');
         Route::get('/startSubscribe', '\App\Http\Controllers\JoeyPepperoni@addSub');
         Route::get('/getWebhooks', '\App\Http\Controllers\JoeyPepperoni@getHooks');
+        Route::get('/tweetTest', '\App\Http\Controllers\JoeyPepperoni@tweetTest');
+        Route::get('/genName', '\App\Http\Controllers\JoeyPepperoni@genName');
 
     });
 
